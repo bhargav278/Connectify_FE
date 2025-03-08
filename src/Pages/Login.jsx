@@ -7,6 +7,10 @@ import { apiRoutes } from "../apis/apiRoutes"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
 
 const Login = () => {
 
@@ -22,7 +26,6 @@ const Login = () => {
             }
 
             const response = await userLogin(apiRoutes.loginApi.path,payLoad);
-            console.log(response.token)
             toast.success(response.msg)
             localStorage.setItem('token',JSON.stringify(response.token));
             setIsLoading(false);
@@ -44,6 +47,12 @@ const Login = () => {
     })
     const {values,errors} = loginForm;
 
+    useGSAP(() => {
+        const tl = gsap.timeline();
+        tl.add(gsap.from(".logo",{ opacity: 0, x: 500, duration: 1}))
+        tl.add(gsap.from(".animate", { opacity: 0, y: 50, duration: 1 ,stagger:0.2}), 0);
+    });
+
     return (
         <Box
             w="100vw"
@@ -62,7 +71,7 @@ const Login = () => {
 
             >
                 <Box className=" rounded-tl-3xl rounded-bl-3xl bg-transparent " w={{ base: "100%", sm: "50%", md: "50%", lg: "50%" }} py="3rem" px="3rem">
-                    <Box className="" mb="3rem">
+                    <Box className="logo" mb="3rem">
                         <Image src={Logo} w={"70%"} />
                     </Box>
                     <Box>
@@ -82,6 +91,7 @@ const Login = () => {
                                 onChange={(e)=>{
                                     loginForm.setFieldValue('userNameorEmail',e.target.value)
                                 }}
+                                className="animate"
                             />
                             <PasswordInput
                                 withAsterisk
@@ -94,19 +104,20 @@ const Login = () => {
                                 onChange={(e)=>{
                                     loginForm.setFieldValue("password",e.target.value)
                                 }}
+                                className="animate"
                             />
-                            <Box className="text-right underline tracking-wide text-sm">Forgot Password</Box>
-                            <Button type="submit" size="md" color="#43b17e" disabled={isLoading}>Sign in</Button>
+                            <Box className="animate text-right underline tracking-wide text-sm">Forgot Password</Box>
+                            <Button type="submit" size="md" color="#43b17e" disabled={isLoading} className="animate">Sign in</Button>
                         </form>
-                        <Box className="mt-5 text-right underline tracking-wide text-sm">Create Account</Box>
+                        <Box className="animate hover:text-[#43b17e] mt-5 text-right underline tracking-wide text-sm cursor-pointer" onClick={()=>navigate("/signup")}>Create Account</Box>
                     </Box>
                 </Box>
                 <Box display={{ base: "none", sm: "block", md: "block" }} className="flex justify-center rounded-tr-3xl rounded-br-3xl  w-[50%] " py="3rem" px="3rem">
-                    <Flex bg="#43b17e" className="w-80 h-96 bg-gradient-to-b from-green-500 to-green-700  font-[Poppins] text-center flex flex-col justify-center items-center rounded-xl shadow-lg p-6 text-black" w="80%" h="100%" direction="column" justify="center" align="center" gap={20}>
-                        <h1 className="text-5xl font-bold">Connect,</h1>
-                        <h1 className="text-5xl font-bold">Share,</h1>
-                        <h1 className="text-5xl font-bold">Inspire.</h1>
-                        <p className="text-lg mt-4 font-light">Your story matters.</p>
+                    <Flex bg="#43b17e" className="logo w-80 h-96 bg-gradient-to-b from-green-500 to-green-700  font-[Poppins] text-center flex flex-col justify-center items-center rounded-xl shadow-lg p-6 text-black" w="80%" h="100%" direction="column" justify="center" align="center" gap={20}>
+                        <h1 className="animate text-5xl font-bold">Connect,</h1>
+                        <h1 className="animate text-5xl font-bold">Share,</h1>
+                        <h1 className="animate text-5xl font-bold">Inspire.</h1>
+                        <p className="animate text-lg mt-4 font-light">Your story matters.</p>
                     </Flex>
                 </Box>
             </Flex>

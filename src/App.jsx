@@ -5,6 +5,7 @@ import Login from "./Pages/Login"
 import { MantineProvider } from '@mantine/core';
 import Logout from './Pages/Logout';
 import { Bounce, ToastContainer } from 'react-toastify';
+import Signup from './Pages/Signup';
 
 function App() {
 
@@ -14,11 +15,12 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer
         position="bottom-right"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick={false}

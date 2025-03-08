@@ -1,5 +1,6 @@
+import dayjs from "dayjs";
 import Joi from "joi";
-
+import validator from "validator";
 
 export const loginSchema = Joi.object({
   userNameorEmail: Joi.alternatives()
@@ -32,3 +33,62 @@ export const loginSchema = Joi.object({
         "Not a strong Password",
     }),
 });
+
+export const signUpSchemaOne = Joi.object({
+  firstName: Joi.string().trim().min(2).max(20).uppercase().pattern(/^[A-Za-z]+$/).required().messages({
+    "string.empty": "First name cannot be empty!",
+    "string.min": "Min length of first name is 2!",
+    "string.max": "Max length of first name is 20!",
+    "string.pattern.base": "Invalid first name!",
+  }),
+
+  lastName: Joi.string().trim().min(2).max(20).uppercase().pattern(/^[A-Za-z]+$/).required().messages({
+    "string.empty": "Last name cannot be empty!",
+    "string.min": "Min length of last name is 2!",
+    "string.max": "Max length of last name is 20!",
+    "string.pattern.base": "Invalid last name!",
+  }),
+
+  userName: Joi.string().trim().min(5).max(50).required().messages({
+    "string.empty": "Username cannot be empty!",
+    "string.min": "Min length of username is 5!",
+    "string.max": "Max length of username is 50!",
+  }),
+
+  email: Joi.string().trim().lowercase().email({ tlds: { allow: false } }).required().messages({
+    "string.empty": "Email cannot be empty!",
+    "string.email": "Invalid email!",
+  }),
+
+  dob: Joi.date()
+    .less(dayjs().subtract(18, "year").toDate()) // Must be at least 18 years old
+    .required()
+    .messages({
+      "date.base": "Invalid date format.",
+      "date.less": "You must be at least 18 years old.",
+      "any.required": "Date of Birth is required.",
+    }),
+
+  gender: Joi.string().valid("male", "female", "other").required().messages({
+    "any.only": "Invalid gender!",
+    "string.empty": "Gender cannot be empty!",
+  }),
+
+  phoneNo: Joi.string()
+    .custom((value, helpers) => {
+      if (!validator.isMobilePhone(value, "any", { strictMode: true })) {
+        return helpers.error("any.invalid");
+      }
+      return value;
+    })
+    .required()
+    .messages({
+      "string.empty": "Phone number cannot be empty!",
+      "any.invalid": "Invalid phone number with country code!",
+    }),
+
+  about: Joi.string().max(100).allow("").messages({
+    "string.max": "About section can have max 100 characters!",
+  }),
+});
+
