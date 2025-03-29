@@ -220,6 +220,14 @@ const Signup = () => {
                                     fontSize: "16px",
                                     outline: "none",
                                 }}
+                                onFocus={(e) => {
+                                    e.target.style.outline = "none";
+                                    e.target.style.boxShadow = "none";
+                                }}
+                                onBlur={(e) => {
+                                    e.target.style.outline = "none";
+                                    e.target.style.boxShadow = "none";
+                                }}
                             />
                             {
                                 (errors.phoneNo) ? <span className="mt-[-35px] text-sm text-red-500">{errors.phoneNo}
