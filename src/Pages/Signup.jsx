@@ -84,11 +84,11 @@ const Signup = () => {
         }
     }
 
-        useGSAP(() => {
-            const tl = gsap.timeline();
-            tl.add(gsap.from(".logo",{ opacity: 0, x: 500, duration: 1}))
-            tl.add(gsap.from(".animate", { opacity: 0, y: 50, duration: 1 ,stagger:0.2}), 0);
-        });
+    useGSAP(() => {
+        const tl = gsap.timeline();
+        tl.add(gsap.from(".logo", { opacity: 0, x: 500, duration: 1 }))
+        tl.add(gsap.from(".animate", { opacity: 0, y: 50, duration: 1, stagger: 0.2 }), 0);
+    });
     return (
         <Box
             w="100%"
@@ -122,7 +122,7 @@ const Signup = () => {
                                         signUpFormOne.setFieldValue('firstName', e.target.value)
                                     }}
                                     className="animate"
-
+                                   
                                 />
                                 <TextInput
                                     withAsterisk
@@ -173,10 +173,9 @@ const Signup = () => {
                                 w="100%"
                                 size="md"
                                 description=" "
-                                value={(values.dob) ? new Date(values.dob) : null}
-                                onChange={(date) => { signUpFormOne.setFieldValue('dob', date) }}
+                                value={values.dob ? dayjs(values.dob, "DD-MM-YYYY").toDate() : null}
+                                onChange={(date) => { signUpFormOne.setFieldValue('dob', dayjs(date).format("YYYY-MM-DD")) }}
                                 withAsterisk
-                                clearable
                                 error={errors.dob}
                                 className="animate"
                             />
@@ -223,6 +222,7 @@ const Signup = () => {
                                 onFocus={(e) => {
                                     e.target.style.outline = "none";
                                     e.target.style.boxShadow = "none";
+                                    e.target.style.backgroundColor = "transparent";
                                 }}
                                 onBlur={(e) => {
                                     e.target.style.outline = "none";
